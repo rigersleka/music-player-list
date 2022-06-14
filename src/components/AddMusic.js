@@ -1,26 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import MusicDataService from "../services/MusicService";
 
 const AddMusic = () => {
   const initialMusicState = {
-    title: '',
-    description: '',
-    published: false,
+    title: "",
+    description: "",
+    published: false
   };
-
   const [music, setMusic] = useState(initialMusicState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = (event) => {
-      const {name, value} = event.target;
-
-    console.log('You clicked');
-    console.log(name);
-    console.log(value);
-    setMusic({...music, [name]: value});
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setMusic({ ...music, [name]: value });
   };
 
   const saveMusic = () => {
-    console.log('you save a music');
+    var data = {
+      title: music.title,
+      description: music.description,
+      published: false
+    };
+
+    MusicDataService.create(data)
+      .then(() => {
+        setSubmitted(true);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   const newMusic = () => {
@@ -28,44 +36,45 @@ const AddMusic = () => {
     setSubmitted(false);
   };
 
-  console.log(music);
   return (
-    <div className='submit-form'>
+    <div className="submit-form">
       {submitted ? (
         <div>
-          <h4>You submitted succesfully!</h4>
-          <button className='btn btn-success' onClick={newMusic}>
+          <h4>You submitted successfully!</h4>
+          <button className="btn btn-success" onClick={newMusic}>
             Add
           </button>
         </div>
       ) : (
         <div>
-          <div className='form-group'>
-            <label htmlFor='title'>Title</label>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
             <input
-              id="title"
               type="text"
-              className="form-control"       
-          /*     value={music.title} */
+              className="form-control"
+              id="title"
+              required
+              value={music.title}
               onChange={handleInputChange}
               name="title"
-              required />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='description'>Description</label>
-            <input
-              id='description'
-              type='text'
-              className='form-control'
-            /*   value={music.description} */
-              onChange={handleInputChange}
-              required
-              name='description'
             />
           </div>
-          
-          <button className='btn btn-success' onClick={saveMusic}>
-            Add Music
+
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <input
+              type="text"
+              className="form-control"
+              id="description"
+              required
+              value={music.description}
+              onChange={handleInputChange}
+              name="description"
+            />
+          </div>
+
+          <button onClick={saveMusic} className="btn btn-success">
+            Submit
           </button>
         </div>
       )}
