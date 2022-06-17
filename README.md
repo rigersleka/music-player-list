@@ -1,3 +1,7 @@
+
+![Music](https://user-images.githubusercontent.com/42070495/174254719-23c207e8-8adb-4dec-af9c-96e1270630bb.png)
+
+
 ## Project setup
 
 In the project directory, you can run:
